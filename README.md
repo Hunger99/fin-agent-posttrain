@@ -211,7 +211,7 @@ For FinSearchComp, provide your own copy of the data at `$FP_DATA_D2/finsearchco
 
 ## 📝 Acknowledgement
 
-This practicum project is sponsored by [Capital One](https://www.capitalone.com/). The implementation is built upon [verl](https://github.com/volcengine/verl), [vLLM](https://github.com/vllm-project/vllm), [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) and [Qwen](https://github.com/QwenLM).
+The implementation is built upon [verl](https://github.com/volcengine/verl), [vLLM](https://github.com/vllm-project/vllm), [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) and [Qwen](https://github.com/QwenLM).
 
 Check each data source's own terms before use:
 

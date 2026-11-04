@@ -211,7 +211,7 @@ FinSearchComp 需要自备数据，放在 `$FP_DATA_D2/finsearchcomp/finsearchco
 
 ## 📝 致谢
 
-本实践项目由 [Capital One](https://www.capitalone.com/) 赞助。实现基于 [verl](https://github.com/volcengine/verl)、[vLLM](https://github.com/vllm-project/vllm)、[LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) 和 [Qwen](https://github.com/QwenLM)。
+实现基于 [verl](https://github.com/volcengine/verl)、[vLLM](https://github.com/vllm-project/vllm)、[LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) 和 [Qwen](https://github.com/QwenLM)。
 
 使用前请查看各数据来源自己的条款：
 
