@@ -1,0 +1,16 @@
+Below is an excerpt of an English financial document. Write up to {n} questions that a financial analyst would answer by calculating from the numbers in this excerpt. They will train a model that answers such questions when it is given the document.
+
+Requirements:
+- Each question needs at least one arithmetic step on numbers that appear in the excerpt, such as a difference, ratio, percentage change, growth rate, sum, average, margin, or per-share or per-unit value. Do not ask for a number that can be copied from the excerpt as it is.
+- Name what the question asks about (the company, item and period, as the excerpt names them), so that a reader of the excerpt knows exactly which numbers to use. Use only numbers, names and periods that appear in the excerpt.
+- The answer is one number. Write the calculation step by step with the numbers from the excerpt, then the final answer. Give a percentage as a percent figure (12.5 for 12.5%) and state the unit.
+- List every number from the excerpt that the calculation uses, copied exactly as the excerpt writes it.
+- If the excerpt has no numbers that support such a question, output an empty array [].
+
+Output only a JSON array and nothing else, in this format:
+[{"question": "...", "numbers": ["...", "..."], "calculation": "...", "answer": "...", "unit": "..."}]
+
+Excerpt:
+<<<
+{chunk}
+>>>

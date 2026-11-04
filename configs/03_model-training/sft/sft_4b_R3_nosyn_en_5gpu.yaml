@@ -1,0 +1,34 @@
+# 5-GPU form of sft_4b_R3_nosyn_en.yaml (research/log/2026-10-28-0040.md): per-device batch 1 x accumulation 4 x 5 GPUs = 20
+# packed sequences per step, the same global batch as the 4-GPU form; every other setting is the same.
+# Run R3-synthetic on the English pools: R3 (domain share 0.5, N = 100,000) without the synthetic document QA, its
+# domain part filled from the other domain sources in proportion (docs/results.md Candidates Version 1), the
+# control of M4 (research/log/2026-10-27-0248.md). Every setting is G's (sft_4b_G_en.yaml); only the mixture and the
+# output directory differ, so the runs differ only in their data.
+model_name_or_path: ${FP_MODELS_D1}/Qwen3-4B-Base
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z1.json
+dataset: mix_R3_nosyn
+dataset_dir: ${FP_DATA_EN}/mixtures
+template: qwen
+cutoff_len: 4096
+packing: true
+neat_packing: true
+preprocessing_num_workers: 16
+output_dir: ${FP_RUNS}/qwen3-4b-base-en/R3_nosyn
+logging_steps: 5
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4
+learning_rate: 1.0e-5
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000

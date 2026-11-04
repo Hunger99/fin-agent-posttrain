@@ -1,0 +1,5 @@
+torch==2.13.0+cu129
+transformers==5.16.1
+vllm==0.32.0+cu129
+numpy==2.3.5
+datasets==5.1.0

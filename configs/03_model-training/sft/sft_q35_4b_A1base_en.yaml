@@ -1,0 +1,33 @@
+# A1, agent SFT from R3' (research/log/2026-10-30-0855.md): Qwen3.8-27B's passed H1 trajectories on the wealth and ML
+# training tasks plus a fixed general slice of the R3 mixture, rendered with Qwen3.5's own chat template by
+# build_agent_sft.py and loaded as a packed, tokenized dataset (16,384 tokens, neat packing). Learning rate, schedule and
+# epochs as R3' (docs/results.md Settings); about 64 samples per optimizer step. Run with train_q35.py in venvs/train-q35.
+# A1-base (added after the R3' results, research/log/2026-10-30-0855.md D2): A1 with the start model Qwen3.5-4B-Base.
+model_name_or_path: ${FP_MODELS_D2}/Qwen3.5-4B-Base
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z2.json
+tokenized_path: ${FP_DATA_D2}/agent_sft/A1
+dataset: mix_R3  # never read: with tokenized_path the loader returns first, but the parser asks for a name
+dataset_dir: ${FP_DATA_EN}/mixtures
+template: qwen3_5
+cutoff_len: 16384
+packing: true
+neat_packing: true
+output_dir: ${FP_RUNS}/qwen3.5-4b-base-en/A1-base
+logging_steps: 1
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 7  # 4 GPUs x 7 packed sequences of ~2.4 samples each ~ 64 samples per step
+learning_rate: 1.0e-5
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_steps: 0.03  # a ratio in transformers 5.20, as in R3'
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000

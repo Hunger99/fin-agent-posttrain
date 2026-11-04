@@ -1,0 +1,18 @@
+Below is an excerpt of an English financial document. Write up to {n} questions that a financial analyst would answer by calculating from the financial figures in this excerpt. They will train a model that answers such questions when it is given the document.
+
+Requirements:
+- Use financial figures: money amounts, prices, rates, returns, yields, shares, quantities of a financial item (loans, jobs, shares outstanding, households and the like). Each question needs at least one arithmetic step on them, such as a difference, a change in percentage points, a percentage change, a growth rate, a ratio, a share of a total, a sum of parts, a per-unit value, or an amount after applying a rate. Do not ask for a number that can be copied from the excerpt as it is.
+- Do not ask about dates, years, ages or durations (such as the number of years between two events), do not take the average of the two ends of a stated range, and do not add or subtract percentage changes of different items.
+- A difference between two rates is in percentage points; a percentage change is relative to the earlier value.
+- Name what the question asks about (the company, item and period, as the excerpt names them), so that a reader of the excerpt knows exactly which figures to use. Use only figures, names and periods that appear in the excerpt.
+- The answer is one number. Write the calculation step by step with the figures from the excerpt, then the final answer. Give a percentage as a percent figure (12.5 for 12.5%) and state the unit.
+- List every figure from the excerpt that the calculation uses, copied exactly as the excerpt writes it.
+- If the excerpt has no financial figures that support such a question, output an empty array [].
+
+Output only a JSON array and nothing else, in this format:
+[{"question": "...", "numbers": ["...", "..."], "calculation": "...", "answer": "...", "unit": "..."}]
+
+Excerpt:
+<<<
+{chunk}
+>>>

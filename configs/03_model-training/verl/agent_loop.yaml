@@ -1,0 +1,3 @@
+# verl agent loops for the market GRPO runs (fin_agent_loop.py); the launcher puts src/03_model-training/code/verl_grpo on PYTHONPATH.
+- name: fin_harness
+  _target_: fin_agent_loop.FinHarnessAgentLoop

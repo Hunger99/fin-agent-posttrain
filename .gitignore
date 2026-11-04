@@ -1,0 +1,37 @@
+# Keep empty result roots; generated results remain local except bank figures
+# the README embeds: negate each directory down to such a figure, then the figure.
+/outputs/**
+!/outputs/README.md
+!/outputs/bank/
+!/outputs/bank/.gitkeep
+!/outputs/bank/figures/
+!/outputs/bank/figures/**
+!/outputs/archive/
+!/outputs/archive/.gitkeep
+# Migration and promotion records stay tracked; their local private tables do not.
+!/outputs/archive/audits/
+!/outputs/archive/audits/**
+/outputs/archive/audits/**/*.local.tsv
+/baselines/*/outputs/
+
+# Machine settings, credentials and installed environments.
+/environment_installation/local.env
+/environment_installation/local.env*
+!/environment_installation/local.env.example
+/environment_installation/.venv/
+/environment_installation/.cache/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Language and tool caches should never enter source control.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+*.log
+*.pid

@@ -1,0 +1,32 @@
+# R3 on Qwen3.5-4B-Base (R3'; research/log/2026-10-29-1815.md): every setting is sft_4b_R3_en.yaml's (the standard
+# mixture mix_R3, 4 GPUs x batch 1 x accumulation 5 packed sequences of 4,096 tokens, 2 epochs, the same seed); only the
+# model and the output directory differ. Run with train_q35.py, which keeps packed samples apart in Qwen3.5's
+# linear-attention layers, in venvs/train-q35.
+model_name_or_path: ${FP_MODELS_D2}/Qwen3.5-4B-Base
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z2.json  # ZeRO-2 (gradients sharded too): the 248k vocabulary's logits leave no room under ZeRO-1
+dataset: mix_R3
+dataset_dir: ${FP_DATA_EN}/mixtures
+template: qwen
+cutoff_len: 4096
+packing: true
+neat_packing: true
+preprocessing_num_workers: 16
+output_dir: ${FP_RUNS}/qwen3.5-4b-base-en/R3
+logging_steps: 5
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 5
+learning_rate: 1.0e-5
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_steps: 0.03  # warmup_ratio 0.03 in transformers 4-5.5; 5.20 takes the ratio as warmup_steps < 1
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000

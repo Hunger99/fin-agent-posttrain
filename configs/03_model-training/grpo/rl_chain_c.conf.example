@@ -1,0 +1,13 @@
+# Settings that rl_chain_c.sh reads from rl_chain_c.conf (this file's name without .example), not from this example.
+# DYN, LR and MINI are read when grpo2 first starts (a resumed grpo2 keeps the values it started with, from
+# rl/grpo2.settings); PPO_LR, PPO_MINI and PPO_CRITIC_LR when ppo2 first starts (likewise kept in rl/ppo2.settings);
+# REWORDED_RL when the reworded test starts. A missing file or key leaves the default shown here.
+# One KEY=VALUE per line; '#' starts a comment; spaces are ignored; each key at most once; any other line, key or
+# value stops the chain with the reason.
+# DYN=0              # 1: run_grpo2.sh's dynamic group filter (groups with 8 equal rewards dropped and refilled); 0: off
+# LR=8.7e-7          # grpo2's actor learning rate; a number with 0 < LR <= 1e-5
+# MINI=96            # grpo2's actor mini-batch in tasks; divides 96, and MINI x 8 divides by the 6 GPUs
+# PPO_LR=8.7e-7      # ppo2's actor learning rate (ppo1.sh's); required, with PPO_MINI, when LR or MINI is not the default
+# PPO_MINI=96        # ppo2's actor mini-batch in tasks (ppo1.sh's); the same rule as MINI
+# PPO_CRITIC_LR=8.7e-6  # ppo2's critic learning rate (ppo1.sh's); 0 < PPO_CRITIC_LR <= 1e-4
+# REWORDED_RL=1      # 1: the reworded test also runs grpo1, grpo2 and ppo2; 0: M1 and the official model only

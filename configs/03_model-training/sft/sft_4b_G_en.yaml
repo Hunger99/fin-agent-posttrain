@@ -1,0 +1,34 @@
+# Run G on the English general pool (Tülu 3 only, research/log/2026-10-26-2006.md): general data only, the control of M1.
+# Section 2's SFT settings; 4 GPUs, ZeRO-1, gradient checkpointing on (research/log/2026-10-26-0057.md).
+# The global batch of section 2 is 128 samples. Packed to 4,096 tokens, the Chinese G's 100,000 samples made 16,390
+# sequences, about 6.1 samples each, so 128 samples are about 21 sequences: 20 per step here (per-device
+# batch 1, which neat_packing requires, x accumulation 5 x 4 GPUs), as for the Chinese G. sft_4b_G_en_3gpu.yaml is
+# the 3-GPU form (21 per step) used while only 3 GPUs were free (research/log/2026-10-26-2044.md).
+model_name_or_path: ${FP_MODELS_D1}/Qwen3-4B-Base
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z1.json
+dataset: mix_G
+dataset_dir: ${FP_DATA_EN}/mixtures
+template: qwen
+cutoff_len: 4096
+packing: true
+neat_packing: true
+preprocessing_num_workers: 16
+output_dir: ${FP_RUNS}/qwen3-4b-base-en/G
+logging_steps: 5
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 5
+learning_rate: 1.0e-5
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000

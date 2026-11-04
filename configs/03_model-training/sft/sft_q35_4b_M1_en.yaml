@@ -1,0 +1,34 @@
+# A1-base, agent SFT from Qwen3.5-4B-Base (sft_q35_4b_A1base_en.yaml), with Qwen3.8-27B's passed H1 trajectories on the
+# market training tasks added (research/log/2026-10-31-0150.md, candidate M1): build_agent_sft_v3.py renders them with
+# the keep-thinking template and takes A1's samples token for token from its packed dataset (--add-packed), so A1-base
+# and M1 differ only by the market trajectories. Learning rate, schedule, epochs and about 64 samples per optimizer step
+# as A1-base; the cutoff is 32,768 because over half of the teacher's dev trajectories of xbrl_ratio exceed 16,384,
+# with the optimizer states in CPU memory as in the pilot. Run with train_q35.py in venvs/train-q35.
+model_name_or_path: ${FP_MODELS_D2}/Qwen3.5-4B-Base
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z2_offload.json
+tokenized_path: ${FP_DATA_D2}/agent_sft/M1
+dataset: mix_R3  # never read: with tokenized_path the loader returns first, but the parser asks for a name
+dataset_dir: ${FP_DATA_EN}/mixtures
+template: qwen3_5
+cutoff_len: 32768
+packing: true
+neat_packing: true
+output_dir: ${FP_RUNS}/qwen3.5-4b-base-en/M1
+logging_steps: 1
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 2  # set from the built data: 6 GPUs x this many packed sequences ~ 64 samples
+learning_rate: 1.0e-5
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_steps: 0.03  # a ratio in transformers 5.20, as in R3'
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000

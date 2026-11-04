@@ -1,0 +1,31 @@
+# RL/OPD pilot arm P2 (research/log/2026-10-30-1830.md): rejection-sampling fine-tuning on A1's own passed rollouts, from A1 on the
+# 360 pilot training tasks (rl_data.py pack --mode sft). The three arms share every setting but the data and, for P3,
+# the loss, learning rate and epochs, all fixed before any pilot result; packing as A1 (neat packing) but to 32,768 tokens, since multi-customer t4 trajectories run 17-29k tokens.
+model_name_or_path: ${FP_RUNS}/qwen3.5-4b-base-en/A1
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z2_offload.json  # optimizer states in CPU memory so that 32,768-token sequences fit
+tokenized_path: ${FP_DATA_D2}/harness_v2/pilot/data/P2
+dataset: mix_R3  # never read: with tokenized_path the loader returns first, but the parser asks for a name
+dataset_dir: ${FP_DATA_EN}/mixtures
+template: qwen3_5
+cutoff_len: 32768
+packing: true
+neat_packing: true
+output_dir: ${FP_RUNS}/qwen3.5-4b-base-en/pilot_P2
+logging_steps: 1
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1  # 4 packed sequences of 32,768 per step, as many tokens as 8 of 16,384: the pilot sets are small
+learning_rate: 5.0e-6
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_steps: 0.03  # a ratio in transformers 5.20, as in A1
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000

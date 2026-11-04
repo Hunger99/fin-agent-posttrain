@@ -1,0 +1,8 @@
+Below is an excerpt of an English financial document and a question about it. Answer the question from the excerpt only. Write the calculation, then the final answer as a number on the last line, after "Answer:". Give a percentage as a percent figure (12.5 for 12.5%).
+
+Excerpt:
+<<<
+{chunk}
+>>>
+
+Question: {question}

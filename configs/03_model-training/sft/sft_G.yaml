@@ -1,0 +1,33 @@
+# Run G of docs/history/02_model-training.md section 3: SFT on general data only, the control of M1.
+# Settings are section 2's SFT row for every SFT run; only dataset and output_dir change between runs.
+# The global batch of section 2 is 128 samples. Packed to 4,096 tokens, G's 100,000 samples make 16,390
+# sequences, about 6.1 samples each, so 128 samples are about 21 sequences: 20 per step here (per-device
+# batch 1, which neat_packing requires, x accumulation 10 x 2 GPUs; accumulation 5 on 4 GPUs).
+model_name_or_path: ${FP_MODELS_D1}/Qwen2.5-1.5B
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: ${FP_REPO}/configs/03_model-training/deepspeed/ds_z2.json
+dataset: mix_G
+dataset_dir: ${FP_DATA_ZH}/mixtures
+template: qwen
+cutoff_len: 4096
+packing: true
+neat_packing: true
+preprocessing_num_workers: 16
+output_dir: ${FP_RUNS}/G
+logging_steps: 10
+save_strategy: "no"
+save_only_model: true
+plot_loss: true
+report_to: none
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 10
+learning_rate: 1.0e-5
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+bf16: true
+flash_attn: fa2
+seed: 20261025
+ddp_timeout: 180000000
